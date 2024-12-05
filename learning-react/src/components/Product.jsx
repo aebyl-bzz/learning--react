@@ -1,10 +1,11 @@
-export default function Product() {
+export default function Product(probs) {
+    const product = probs.product;
     return (
         <div className="w-1/4 p-5">
-            <img src="https://placeholder.it"/>
-            <h2 className="font-bold">Product Title</h2>
-            <p>Product Description</p>
-            <p className=" text-gray-500">Product Price</p>
+            <img src={product.thumbnail}/>
+            <h2 className="font-bold">{product.title}</h2>
+            <p>{product.description}</p>
+            <p className=" text-gray-500">$ {product.price}</p>
         </div>
     )
 }
