@@ -1,0 +1,10 @@
+{
+  "name": "FFIT_DeKa_HE24_IM23b",
+  "version": "1.0.0",
+  "description": "",
+  "main": "LU01A01 JavaScript Grundlagen/Aufgabe 1/Aufgabe 1.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "private": true
+}
