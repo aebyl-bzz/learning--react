@@ -1,56 +1,42 @@
-import Product from "./Product";
+import Product from './Product';
 import {useEffect, useState} from "react";
-import reportWebVitals from "../reportWebVitals";
-
-
-
-
 
 export default function ProductList() {
+    const limit = 36;
+    const [data, setData] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const totalPages = Math.ceil(data.total / limit);
 
-    const limit = 12;
-
-
-    const [page, setPage] = useState(1);
-
-
-
-
-    const [products, setProducts] = useState([]);
-    const totalPages = Math.ceil(100 / limit);
-
-
-
-    useEffect( ()  => {
-        let skip = (page - 1) * limit;
-        fetch(`https://dummyjson.com/products?limit=${limit}&skip=${skip}`)            .then(res => res.json())
-            .then(data => {
-                setProducts(data.products);
-            })
-    },  [page]);
+    useEffect(() => {
+        let skip = (currentPage - 1) * limit;
+        fetch(`https://dummyjson.com/products?limit=${limit}&skip=${skip}`)
+        .then(res => res.json())
+        .then(data => {
+            setData(data)
+        })
+    }, [currentPage]);
 
     return (
-        <div className="flex flex-wrap w-full p-5">
-            {products.map((product) => (
-                <Product key={product.id} product={product}/>
+        <div className="flex flex-wrap p-5">
+            { data.products && data.products.map((product) => (
+                <Product product={product} />
             ))}
 
-
-            <button disabled={page === 1} onClick={() => setPage(1)}>First</button>
-            <button className="p-3" onClick={() => setPage(page - 1)}>Prev</button>
-
-            {page - 2 > 0 && <button className="p-3" onClick={() => setPage(page - 2)}>{page - 2}</button>}
-            {page - 1 > 0 && <button className="p-3" onClick={() => setPage(page - 1)}>{page - 1}</button>}
-
-            <p className="p-3 text-green-500">{page}</p>
-            <button className="p-3" onClick={() => setPage(page + 1)}>{page + 1}</button>
-            <button className="p-3" onClick={() => setPage(page + 2)}>{page + 2}</button>
-            <button className="p-3" onClick={() => setPage(page + 1)}>Next</button>
-            <button disabled={page === totalPages} onClick={() => setPage(totalPages)}>Last</button>
+            <div className="flex gap-5 w-full justify-center">
+                <button disabled={currentPage === 1} onClick={() => setCurrentPage(1)}>First</button>
+                <button disabled={currentPage - 1 <= 0} onClick={() => setCurrentPage(currentPage - 1)}>Prev</button>
+                {currentPage - 2 >= 1 &&
+                    <button onClick={() => setCurrentPage(currentPage - 2)}>{currentPage - 2}</button>}
+                {currentPage - 1 >= 1 &&
+                    <button onClick={() => setCurrentPage(currentPage - 1)}>{currentPage - 1}</button>}
+                <p className="text-green-500">{currentPage}</p>
+                {currentPage + 1 <= totalPages &&
+                    <button onClick={() => setCurrentPage(currentPage + 1)}>{currentPage + 1}</button>}
+                {currentPage + 2 <= totalPages &&
+                    <button onClick={() => setCurrentPage(currentPage + 2)}>{currentPage + 2}</button>}
+                <button disabled={currentPage + 1 > totalPages} onClick={() => setCurrentPage(currentPage + 1)}>Next</button>
+                <button onClick={() => setCurrentPage(totalPages)}>Last</button>
+            </div>
         </div>
-
-
     )
 }
-
-
