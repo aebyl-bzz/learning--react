@@ -1,5 +1,8 @@
 import Product from "./Product";
 import {useEffect, useState} from "react";
+import reportWebVitals from "../reportWebVitals";
+
+
 
 
 
@@ -14,6 +17,7 @@ export default function ProductList() {
 
 
     const [products, setProducts] = useState([]);
+    const totalPages = Math.ceil(100 / limit);
 
 
 
@@ -31,20 +35,21 @@ export default function ProductList() {
                 <Product key={product.id} product={product}/>
             ))}
 
-            <Pagination
-                page={page}
-                setPage={setPage}
-                maxPage={100}
-            />
 
+            <button disabled={page === 1} onClick={() => setPage(1)}>First</button>
             <button className="p-3" onClick={() => setPage(page - 1)}>Prev</button>
-            <button className="p-3" onClick={() => setPage(page - 2)}>{page - 2}</button>
-            <button className="p-3" onClick={() => setPage(page - 1)}>{page - 1}</button>
+
+            {page - 2 > 0 && <button className="p-3" onClick={() => setPage(page - 2)}>{page - 2}</button>}
+            {page - 1 > 0 && <button className="p-3" onClick={() => setPage(page - 1)}>{page - 1}</button>}
+
             <p className="p-3 text-green-500">{page}</p>
             <button className="p-3" onClick={() => setPage(page + 1)}>{page + 1}</button>
             <button className="p-3" onClick={() => setPage(page + 2)}>{page + 2}</button>
             <button className="p-3" onClick={() => setPage(page + 1)}>Next</button>
+            <button disabled={page === totalPages} onClick={() => setPage(totalPages)}>Last</button>
         </div>
+
+
     )
 }
 
